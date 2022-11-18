@@ -1,6 +1,5 @@
 package si.fri.rso.invoicemicroservice.models.converters;
 
-
 import si.fri.rso.invoicemicroservice.lib.Invoice;
 import si.fri.rso.invoicemicroservice.models.entities.InvoiceEntity;
 
@@ -14,6 +13,7 @@ public class InvoiceConverter {
         dto.setUserId(entity.getUserId());
         dto.setOtp(entity.getOtp());
         dto.setPayed(entity.getPayed());
+        dto.setCreatedAt(entity.getCreatedAt());
 
         return dto;
 
@@ -26,6 +26,7 @@ public class InvoiceConverter {
         entity.setUserId(dto.getUserId());
         entity.setOtp(dto.getOtp());
         entity.setPayed(dto.getPayed());
+        entity.setCreatedAt(dto.getCreatedAt());
 
         return entity;
 

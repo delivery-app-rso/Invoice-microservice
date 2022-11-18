@@ -5,7 +5,7 @@ import java.util.Date;
 public class Invoice {
     private Integer id;
 
-    //TODO: Change to foreign key
+    // TODO: Change to foreign key
     private Integer userId;
 
     private Double amount;
@@ -13,6 +13,8 @@ public class Invoice {
     private String otp;
 
     private Boolean payed;
+
+    private Date createdAt;
 
     public Integer getId() {
         return id;
@@ -52,5 +54,13 @@ public class Invoice {
 
     public void setPayed(Boolean payed) {
         this.payed = payed;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

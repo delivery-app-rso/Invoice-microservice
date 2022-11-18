@@ -13,8 +13,8 @@ public class InvoiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //TODO Change to user table relations mapping
-    @Column(name="userId")
+    // TODO Change to user table relations mapping
+    @Column(name = "userId")
     private Integer userId;
 
     @Column(name = "amount")
@@ -23,8 +23,11 @@ public class InvoiceEntity {
     @Column(name = "otp")
     private String otp;
 
-    @Column(name="payed")
+    @Column(name = "payed")
     private Boolean payed;
+
+    @Column(name = "createdAt")
+    private Date createdAt;
 
     public Integer getId() {
         return id;
@@ -64,6 +67,14 @@ public class InvoiceEntity {
 
     public void setPayed(Boolean payed) {
         this.payed = payed;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

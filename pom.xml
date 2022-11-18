@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>si.fri.rso</groupId>
     <artifactId>invoice-microservice</artifactId>
     <packaging>pom</packaging>
@@ -15,7 +14,6 @@
         <module>services</module>
         <module>tests</module>
     </modules>
-
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
@@ -132,6 +130,21 @@
                 <version>2.2.4</version>
             </dependency>
             <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.31</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>html2pdf</artifactId>
+                <version>2.1.6</version>
+            </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>8.4.5</version>
+            </dependency>
+            <dependency>
                 <groupId>si.fri.rso</groupId>
                 <artifactId>invoice-microservice-api</artifactId>
                 <version>${project.version}</version>
@@ -202,5 +215,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>

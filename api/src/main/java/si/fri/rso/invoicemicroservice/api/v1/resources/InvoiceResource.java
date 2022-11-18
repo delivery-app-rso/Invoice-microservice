@@ -34,8 +34,8 @@ public class InvoiceResource {
 
         @Operation(description = "Get all invoices.", summary = "Get all invoices")
         @APIResponses({
-                @APIResponse(responseCode = "200", description = "List of invoices", content = @Content(schema = @Schema(implementation = Invoice.class, type = SchemaType.ARRAY)), headers = {
-                        @Header(name = "X-Total-Count", description = "Number of objects in list") }) })
+                        @APIResponse(responseCode = "200", description = "List of invoices", content = @Content(schema = @Schema(implementation = Invoice.class, type = SchemaType.ARRAY)), headers = {
+                                        @Header(name = "X-Total-Count", description = "Number of objects in list") }) })
         @GET
         public Response getMails() {
                 List<Invoice> invoices = this.invoiceBean.getInvoices();
@@ -44,10 +44,11 @@ public class InvoiceResource {
 
         @Operation(description = "Get invoice.", summary = "Get invoice")
         @APIResponses({
-                @APIResponse(responseCode = "200", description = "invoice data", content = @Content(schema = @Schema(implementation = Invoice.class))) })
+                        @APIResponse(responseCode = "200", description = "invoice data", content = @Content(schema = @Schema(implementation = Invoice.class))) })
         @GET
         @Path("/{invoiceId}")
-        public Response getInvoice(@Parameter(description = "invoice ID.", required = true) @PathParam("invoiceId") Integer invoiceId) {
+        public Response getInvoice(
+                        @Parameter(description = "invoice ID.", required = true) @PathParam("invoiceId") Integer invoiceId) {
 
                 Invoice invoice = invoiceBean.getInvoice(invoiceId);
 
@@ -60,12 +61,13 @@ public class InvoiceResource {
 
         @Operation(description = "Store invoice in DB.", summary = "Store invoice")
         @APIResponses({
-                @APIResponse(responseCode = "201", description = "Invoice successfully added."),
-                @APIResponse(responseCode = "405", description = "Validation error .")
+                        @APIResponse(responseCode = "201", description = "Invoice successfully added."),
+                        @APIResponse(responseCode = "405", description = "Validation error .")
         })
         @POST
-        public Response createInvoice(@RequestBody(description = "DTO object with Invoice data.", required = true, content = @Content(schema = @Schema(implementation = InvoiceDto.class))) InvoiceDto invoiceDto) {
-                if(invoiceDto.getUserId() == null) {
+        public Response createInvoice(
+                        @RequestBody(description = "DTO object with Invoice data.", required = true, content = @Content(schema = @Schema(implementation = InvoiceDto.class))) InvoiceDto invoiceDto) {
+                if (invoiceDto.getUserId() == null) {
                         return Response.status(Response.Status.BAD_REQUEST).build();
                 }
 

@@ -4,6 +4,9 @@ import si.fri.rso.invoicemicroservice.lib.Invoice;
 import si.fri.rso.invoicemicroservice.lib.InvoiceDto;
 import si.fri.rso.invoicemicroservice.models.converters.InvoiceConverter;
 import si.fri.rso.invoicemicroservice.models.entities.InvoiceEntity;
+import si.fri.rso.invoicemicroservice.services.files.MinioHandler;
+import si.fri.rso.invoicemicroservice.services.pdfs.PdfGenerator;
+import si.fri.rso.invoicemicroservice.services.templates.TemplateEngine;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -23,6 +26,9 @@ public class InvoiceBean {
 
     @Inject
     private EntityManager em;
+
+    @Inject
+    PdfGenerator pdfGenerator;
 
     public List<Invoice> getInvoices() {
         TypedQuery<InvoiceEntity> query = em.createNamedQuery(
@@ -47,7 +53,8 @@ public class InvoiceBean {
     public Invoice createInvoice(InvoiceDto invoiceDto) {
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setUserId(invoiceDto.getUserId());
-        invoiceEntity.setAmount(90.0);    //TODO: remove magic numbers and get them by calculating data from other microservices
+        invoiceEntity.setAmount(90.0); // TODO: remove magic numbers and get them by calculating data from other
+                                       // microservices
         invoiceEntity.setOtp(String.valueOf(UUID.randomUUID()));
         invoiceEntity.setPayed(false);
 
@@ -56,6 +63,8 @@ public class InvoiceBean {
         if (invoiceEntity.getId() == null) {
             throw new RuntimeException("Entity was not persisted");
         }
+
+        this.pdfGenerator.generate(InvoiceConverter.toDto(invoiceEntity));
 
         return InvoiceConverter.toDto(invoiceEntity);
     }
