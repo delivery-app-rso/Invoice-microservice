@@ -1,0 +1,1 @@
+INSERT INTO invoices(userId, amount, otp, payed) VALUES(1, 99.99, 'Sd=DJ)W=DJdSLdk(#jwa/1osadj2uj=)U2s', false);
