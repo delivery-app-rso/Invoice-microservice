@@ -11,26 +11,30 @@ import io.minio.errors.InternalException;
 import io.minio.errors.InvalidResponseException;
 import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
+import si.fri.rso.invoicemicroservice.services.config.MinioProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class MinioHandler {
 
     private MinioClient minioClient;
 
-    public MinioHandler() {
-        Dotenv dotenv = Dotenv.load();
+    @Inject
+    private MinioProperties minioProperties;
 
-        // TODO: Read from config server
+    @PostConstruct
+    public void initMinioClient() {
         this.minioClient = MinioClient.builder()
-                .endpoint("http://localhost:9000")
-                .credentials(dotenv.get("MINIO_ACCESS_KEY"), dotenv.get("MINIO_SECRET_KEY"))
+                .endpoint(this.minioProperties.getHost(), this.minioProperties.getPort(), false)
+                .credentials(this.minioProperties.getAccessKey(), this.minioProperties.getSecret())
                 .build();
     }
 

@@ -28,7 +28,6 @@ public class PdfGenerator {
     public void generate(Invoice invoice) {
         // TODO: Replace magic strings with data fetched from other microservicess
         Map<String, String> dataModel = new HashMap<>();
-        System.out.println("am here");
         dataModel.put("amount", String.valueOf(invoice.getAmount()));
         dataModel.put("totalAmount", String.valueOf(invoice.getAmount()));
         dataModel.put("invoiceNum", String.valueOf(invoice.getId()));
@@ -36,7 +35,6 @@ public class PdfGenerator {
         dataModel.put("user", "Test user");
         dataModel.put("email", "testuser@gmail.com");
         dataModel.put("item", "Test item");
-        System.out.println("tet");
         String invoiceHTML = this.templateEngine.getTemplateHTML("invoice.html", dataModel);
         try {
             /**
@@ -46,7 +44,6 @@ public class PdfGenerator {
              */
             String invoiceFileName = "invoice-" + invoice.getId() + ".pdf";
             HtmlConverter.convertToPdf(invoiceHTML, new FileOutputStream(invoiceFileName));
-            System.out.println("converted");
 
             this.minioHandler.uploadFileToBucket(invoiceFileName);
             File file = new File(invoiceFileName);

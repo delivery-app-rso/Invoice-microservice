@@ -1,6 +1,4 @@
 kumuluzee:
-  env:
-    name: dev
   version: 1.0.0
   server:
     base-url: http://localhost:8080
@@ -9,6 +7,6 @@ kumuluzee:
   datasources:
     - jndi-name: jdbc/InvoiceDS
       max-pool-size: 20
-      connection-url: jdbc:postgresql://localhost:5432/invoices-db
+      connection-url: jdbc:postgresql://localhost:5432/rso-db
       username: dbuser
       password: postgres

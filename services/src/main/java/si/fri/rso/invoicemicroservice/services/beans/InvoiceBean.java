@@ -4,7 +4,6 @@ import si.fri.rso.invoicemicroservice.lib.Invoice;
 import si.fri.rso.invoicemicroservice.lib.InvoiceDto;
 import si.fri.rso.invoicemicroservice.models.converters.InvoiceConverter;
 import si.fri.rso.invoicemicroservice.models.entities.InvoiceEntity;
-import si.fri.rso.invoicemicroservice.services.files.MinioHandler;
 import si.fri.rso.invoicemicroservice.services.pdfs.PdfGenerator;
 import si.fri.rso.invoicemicroservice.services.templates.TemplateEngine;
 
