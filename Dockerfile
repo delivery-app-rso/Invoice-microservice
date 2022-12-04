@@ -9,4 +9,4 @@ WORKDIR /app
 COPY --from=build ./app/api/target/invoice-microservice-api-1.0.0-SNAPSHOT.jar /app
 COPY --from=build ./app/services/src/main/resources/templates/ /app/templates/
 EXPOSE 8080
-CMD ["java", "-jar", "invoice-microservice-api-1.0.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "invoicing-microservice-api-1.0.0-SNAPSHOT.jar"]

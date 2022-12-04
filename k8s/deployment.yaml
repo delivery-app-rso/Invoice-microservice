@@ -13,7 +13,7 @@ spec:
         app: invoicing-microservice
     spec:
       containers:
-        - image: rsouser/invoicing-microservice-prod
+        - image: rsouser/invoicing-microservice
           name: invoicing-microservice
           env:
             - name: DB_HOST
