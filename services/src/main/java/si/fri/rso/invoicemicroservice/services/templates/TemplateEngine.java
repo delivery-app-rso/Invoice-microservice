@@ -7,27 +7,32 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import si.fri.rso.invoicemicroservice.services.config.TemplateEngineProperties;
 
 @RequestScoped
 public class TemplateEngine {
     private Configuration cfg;
 
-    public TemplateEngine() {
-        this.configureEngine();
-    }
+    @Inject
+    private TemplateEngineProperties templateEngineProperties;
 
+    public TemplateEngine() {}
+
+    @PostConstruct
     private void configureEngine() {
         this.cfg = new Configuration(Configuration.VERSION_2_3_29);
 
         try {
             this.cfg.setDirectoryForTemplateLoading(
-                    new File("services/src/main/resources/templates"));
+                    new File(this.templateEngineProperties.getTemplatesPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }

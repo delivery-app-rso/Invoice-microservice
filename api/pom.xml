@@ -38,6 +38,14 @@
             <groupId>si.fri.rso</groupId>
             <artifactId>invoice-microservice-services</artifactId>
         </dependency>
+        <dependency>
+            <groupId>si.fri.rso</groupId>
+            <artifactId>invoice-microservice-lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>si.fri.rso</groupId>
+            <artifactId>invoice-microservice-lib</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

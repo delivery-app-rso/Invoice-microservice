@@ -20,6 +20,9 @@ public class MinioProperties {
     @ConfigValue(watch = true)
     private String secret;
 
+    @ConfigValue(watch = true)
+    private String invoicesBucket;
+
     public String getHost() {
         return host;
     }
@@ -50,5 +53,13 @@ public class MinioProperties {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public String getInvoicesBucket() {
+        return invoicesBucket;
+    }
+
+    public void setInvoicesBucket(String invoicesBucket) {
+        this.invoicesBucket = invoicesBucket;
     }
 }

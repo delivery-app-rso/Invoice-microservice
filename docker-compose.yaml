@@ -1,15 +1,5 @@
 version: '3.9'
 services:
-  postgres:
-    image: postgres:13
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-    ports:
-      - "${DB_PORT}:5432"
-    volumes:
-      - db:/var/lib/postdgresql/data
   service:
     build:
       context: .
@@ -20,10 +10,14 @@ services:
       - KUMULUZEE_DATASOURCES0_USERNAME=${POSTGRES_USER}
       - KUMULUZEE_DATASOURCES0_PASSWORD=${POSTGRES_PASSWORD}
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+      - KUMULUZEE_CONFIG_CONSUL_AGENT=${CONSUL_URL}
     ports:
-      - "127.0.0.1:${LOCAL_PORT}:8080"
-    depends_on:
-      - postgres
-volumes:
-  db:
-    driver: local
+      - ${LOCAL_PORT}:8080
+
+networks:
+  default:
+    name: local.rso.com
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.100.1.0/24

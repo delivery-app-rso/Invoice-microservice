@@ -41,7 +41,7 @@ public class MinioHandler {
     public void uploadFileToBucket(String fileName) {
         try {
             minioClient.uploadObject(
-                    UploadObjectArgs.builder().bucket("invoices").object(fileName).filename(fileName).build());
+                    UploadObjectArgs.builder().bucket(this.minioProperties.getInvoicesBucket()).object(fileName).filename(fileName).build());
         } catch (Exception e) {
             e.printStackTrace();
         }

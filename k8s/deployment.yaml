@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoicing-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: invoicing-microservice
+  template:
+    metadata:
+      labels:
+        app: invoicing-microservice
+    spec:
+      containers:
+        - image: rsouser/invoicing-microservice-prod
+          name: invoicing-microservice
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: gke-rso-secrets
+                  key: db_host
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: gke-rso-secrets
+                  key: db_name
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: gke-rso-secrets
+                  key: db_user
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gke-rso-secrets
+                  key: db_pass
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoicing-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: invoicing-microservice
