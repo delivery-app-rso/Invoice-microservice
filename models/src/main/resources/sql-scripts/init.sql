@@ -1,1 +1,2 @@
-INSERT INTO invoices(userId, amount, otp, payed) VALUES(1, 99.99, 'Sd=DJ)W=DJdSLdk(#jwa/1osadj2uj=)U2s', false);
+INSERT INTO invoices(userId, amount) VALUES(1, 99.99);
+INSERT INTO invoice_items(invoice_id, itemId) VALUES(1, 1);

@@ -1,6 +1,9 @@
 package si.fri.rso.invoicemicroservice.models.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,18 +16,14 @@ public class InvoiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // TODO Change to user table relations mapping
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.PERSIST)
+    private List<InvoiceItemEntity> invoiceItems = new ArrayList<>();
+
     @Column(name = "userId")
     private Integer userId;
 
     @Column(name = "amount")
     private Double amount;
-
-    @Column(name = "otp")
-    private String otp;
-
-    @Column(name = "payed")
-    private Boolean payed;
 
     @Column(name = "createdAt")
     private Date createdAt;
@@ -53,28 +52,28 @@ public class InvoiceEntity {
         this.amount = amount;
     }
 
-    public String getOtp() {
-        return otp;
-    }
-
-    public void setOtp(String otp) {
-        this.otp = otp;
-    }
-
-    public Boolean getPayed() {
-        return payed;
-    }
-
-    public void setPayed(Boolean payed) {
-        this.payed = payed;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<InvoiceItemEntity> getInvoiceItems() {
+        return invoiceItems;
+    }
+
+    public void setInvoiceItems(List<InvoiceItemEntity> invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
+
+    public void addInvoiceItem(InvoiceItemEntity invoiceItem) {
+        if (this.invoiceItems == null) {
+            this.invoiceItems = new ArrayList<>();
+        }
+
+        this.invoiceItems.add(invoiceItem);
     }
 
     @Override

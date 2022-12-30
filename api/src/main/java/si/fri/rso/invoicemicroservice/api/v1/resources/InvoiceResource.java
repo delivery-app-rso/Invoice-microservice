@@ -67,7 +67,7 @@ public class InvoiceResource {
         @POST
         public Response createInvoice(
                         @RequestBody(description = "DTO object with Invoice data.", required = true, content = @Content(schema = @Schema(implementation = InvoiceDto.class))) InvoiceDto invoiceDto) {
-                if (invoiceDto.getUserId() == null) {
+                if (invoiceDto.getUserId() == null || invoiceDto.getItemId() == null) {
                         return Response.status(Response.Status.BAD_REQUEST).build();
                 }
 

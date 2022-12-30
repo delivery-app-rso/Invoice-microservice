@@ -4,6 +4,7 @@ import si.fri.rso.invoicemicroservice.lib.Invoice;
 import si.fri.rso.invoicemicroservice.lib.InvoiceDto;
 import si.fri.rso.invoicemicroservice.models.converters.InvoiceConverter;
 import si.fri.rso.invoicemicroservice.models.entities.InvoiceEntity;
+import si.fri.rso.invoicemicroservice.models.entities.InvoiceItemEntity;
 import si.fri.rso.invoicemicroservice.services.pdfs.PdfGenerator;
 import si.fri.rso.invoicemicroservice.services.templates.TemplateEngine;
 
@@ -12,6 +13,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
+
+import org.eclipse.microprofile.metrics.annotation.Timed;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,13 +52,12 @@ public class InvoiceBean {
         return invoice;
     }
 
+    @Timed
     public Invoice createInvoice(InvoiceDto invoiceDto) {
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setUserId(invoiceDto.getUserId());
         invoiceEntity.setAmount(90.0); // TODO: remove magic numbers and get them by calculating data from other
                                        // microservices
-        invoiceEntity.setOtp(String.valueOf(UUID.randomUUID()));
-        invoiceEntity.setPayed(false);
 
         this.persistEntity(invoiceEntity);
 
@@ -63,9 +65,25 @@ public class InvoiceBean {
             throw new RuntimeException("Entity was not persisted");
         }
 
+        InvoiceItemEntity invoiceItemEntity = this.createInvoiceItemEntry(invoiceEntity, invoiceDto.getItemId());
+        invoiceEntity.addInvoiceItem(invoiceItemEntity);
         this.pdfGenerator.generate(InvoiceConverter.toDto(invoiceEntity));
 
         return InvoiceConverter.toDto(invoiceEntity);
+    }
+
+    private InvoiceItemEntity createInvoiceItemEntry(InvoiceEntity invoiceEntity, Integer itemId) {
+        InvoiceItemEntity invoiceItemEntity = new InvoiceItemEntity();
+        invoiceItemEntity.setInvoice(invoiceEntity);
+        invoiceItemEntity.setItemId(itemId);
+
+        this.persistEntity(invoiceItemEntity);
+
+        if (invoiceItemEntity.getId() == null) {
+            throw new RuntimeException("Entity was not persisted");
+        }
+
+        return invoiceItemEntity;
     }
 
     private <T> void persistEntity(T entity) {

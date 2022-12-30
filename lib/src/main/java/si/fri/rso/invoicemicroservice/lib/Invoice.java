@@ -1,20 +1,19 @@
 package si.fri.rso.invoicemicroservice.lib;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Invoice {
     private Integer id;
 
-    // TODO: Change to foreign key
     private Integer userId;
 
     private Double amount;
 
-    private String otp;
-
-    private Boolean payed;
-
     private Date createdAt;
+
+    private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -40,22 +39,6 @@ public class Invoice {
         this.amount = amount;
     }
 
-    public String getOtp() {
-        return otp;
-    }
-
-    public void setOtp(String otp) {
-        this.otp = otp;
-    }
-
-    public Boolean getPayed() {
-        return payed;
-    }
-
-    public void setPayed(Boolean payed) {
-        this.payed = payed;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -63,4 +46,21 @@ public class Invoice {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public List<InvoiceItem> getInvoiceItems() {
+        return invoiceItems;
+    }
+
+    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
+
+    public void addInvoiceItem(InvoiceItem invoiceItem) {
+        if (this.invoiceItems == null) {
+            this.invoiceItems = new ArrayList<>();
+        }
+
+        this.invoiceItems.add(invoiceItem);
+    }
+
 }

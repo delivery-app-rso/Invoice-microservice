@@ -10,6 +10,20 @@ kumuluzee:
       connection-url: jdbc:postgresql://localhost:5432/rso_db
       username: dbuser
       password: postgres
+  health:
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/InvoiceDS
+      disk-space-health-check:
+        threshold: 100000000
+  metrics:
+    servlet:
+      enabled: true
+      mapping: /metrics
+    web-instrumentation:
+      - name: invoices-endpoint
+        url-pattern: /v1/invoices/*
   config:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000

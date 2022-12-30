@@ -16,8 +16,5 @@ services:
 
 networks:
   default:
-    name: local.rso.com
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.100.1.0/24
+    name: rso
+    external: true
