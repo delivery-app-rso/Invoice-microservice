@@ -1,5 +1,6 @@
 kumuluzee:
   version: 1.0.0
+  name: invoice-microservice
   server:
     base-url: http://localhost:8080
     http:
@@ -29,3 +30,8 @@ kumuluzee:
     max-retry-delay-ms: 900000
     consul:
       agent: http://localhost:8500
+  rest-client:
+    registrations:
+      - class: invoice-mail-process-api
+        url: http://localhost:8080/v1
+        read-timeout: 5000

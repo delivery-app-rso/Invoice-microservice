@@ -43,7 +43,13 @@ public class PdfGenerator {
         dataModel.put("createdAt", LocalDate.now().toString());
         dataModel.put("user", "Test user");
         dataModel.put("email", "testuser@gmail.com");
-        dataModel.put("item", servicesBean.getItem(invoice.getInvoiceItems().get(0).getItemId()).getString("name"));
+        JSONObject invoiceItem = servicesBean.getItem(invoice.getInvoiceItems().get(0).getItemId());
+
+        if (invoiceItem == null) {
+            throw new RuntimeException("Failed to fetch invoice item!");
+        }
+
+        dataModel.put("item", invoiceItem.getString("name"));
 
         String invoiceHTML = this.templateEngine.getTemplateHTML("invoice.html", dataModel);
         try {

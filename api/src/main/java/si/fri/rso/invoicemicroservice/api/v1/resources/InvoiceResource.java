@@ -9,6 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+
 import si.fri.rso.invoicemicroservice.lib.Invoice;
 import si.fri.rso.invoicemicroservice.lib.InvoiceDto;
 import si.fri.rso.invoicemicroservice.services.beans.InvoiceBean;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.util.List;
 import java.util.logging.Logger;
 

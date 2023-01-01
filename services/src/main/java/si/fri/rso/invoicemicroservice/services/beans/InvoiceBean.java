@@ -6,7 +6,6 @@ import si.fri.rso.invoicemicroservice.models.converters.InvoiceConverter;
 import si.fri.rso.invoicemicroservice.models.entities.InvoiceEntity;
 import si.fri.rso.invoicemicroservice.models.entities.InvoiceItemEntity;
 import si.fri.rso.invoicemicroservice.services.pdfs.PdfGenerator;
-import si.fri.rso.invoicemicroservice.services.templates.TemplateEngine;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

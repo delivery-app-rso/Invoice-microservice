@@ -1,9 +1,7 @@
 package si.fri.rso.invoicemicroservice.services.beans;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.concurrent.CompletionStage;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -15,11 +13,12 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 
-import org.json.JSONArray;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 import si.fri.rso.invoicemicroservice.lib.Invoice;
+import si.fri.rso.invoicemicroservice.lib.InvoiceMailDto;
+import si.fri.rso.invoicemicroservice.services.clients.InvoiceMailProcessApi;
 import si.fri.rso.invoicemicroservice.services.config.ServicesProperties;
 
 @ApplicationScoped
@@ -28,13 +27,15 @@ public class ServicesBean {
     @Inject
     ServicesProperties servicesProperties;
 
+    @Inject
+    @RestClient
+    private InvoiceMailProcessApi invoiceMailProcessApi;
+
     private Client httpClient;
-    private HttpClient client;
 
     @PostConstruct
     public void init() {
         this.httpClient = ClientBuilder.newClient();
-        this.client = HttpClient.newHttpClient();
     }
 
     public JSONObject getItem(Integer itemId) {
@@ -53,38 +54,20 @@ public class ServicesBean {
         }
     }
 
+    public JSONObject getItemFallback(Integer itemId) {
+        return null;
+    }
+
     public void sendInvoiceEmail(Invoice invoice) {
-        try {
-            System.out.println(invoice.getFilename());
-            System.out.println(invoice.getInvoiceItems().get(0).getItemId());
+        HashMap<String, String> invoiceData = new HashMap<>();
 
-            JSONObject invoiceData = new JSONObject();
-            invoiceData.put("filename", invoice.getFilename());
-            invoiceData.put("amount", invoice.getAmount());
-            invoiceData.put("itemId", invoice.getInvoiceItems().get(0).getItemId());
+        invoiceData.put("filename", invoice.getFilename());
+        invoiceData.put("amount", String.valueOf(invoice.getAmount()));
+        invoiceData.put("itemId", String.valueOf(invoice.getInvoiceItems().get(0).getItemId()));
 
-            JSONObject body = new JSONObject();
-            body.put("type", "invoice");
-            body.put("userId", invoice.getUserId());
+        CompletionStage<String> stringCompletionStage = invoiceMailProcessApi
+                .sendMailAsynch(new InvoiceMailDto("invoice", invoice.getUserId(), invoiceData));
 
-            body.put("invoiceData", invoiceData);
-            System.out.println(body);
-            System.out.println(body.toString());
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(this.servicesProperties.getMailingServiceHost() + "/v1/mailing"))
-                    .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                    .header("Content-Type", "application/json")
-                    .build();
-
-            HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println(response.statusCode());
-
-            System.out.println(response.body());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new InternalServerErrorException(e);
-        }
+        stringCompletionStage.whenComplete((s, throwable) -> System.out.println("Finished sending mail: " + s));
     }
 }
