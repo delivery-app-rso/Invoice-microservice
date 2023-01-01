@@ -23,7 +23,8 @@ public class ItemsServiceHealthCheck implements HealthCheck {
     public HealthCheckResponse call() {
         try {
 
-            HttpURLConnection connection = (HttpURLConnection) new URL(servicesProperties.getItemsServiceHost())
+            HttpURLConnection connection = (HttpURLConnection) new URL(
+                    servicesProperties.getItemsServiceHost() + "/v1/items/status")
                     .openConnection();
             connection.setRequestMethod("HEAD");
 

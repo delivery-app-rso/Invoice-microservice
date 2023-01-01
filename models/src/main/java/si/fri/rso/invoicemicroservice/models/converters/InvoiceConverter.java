@@ -23,6 +23,7 @@ public class InvoiceConverter {
         dto.setInvoiceItems(invoiceItems);
         dto.setAmount(entity.getAmount());
         dto.setUserId(entity.getUserId());
+        dto.setFilename(entity.getFilename());
         dto.setCreatedAt(entity.getCreatedAt());
 
         return dto;
@@ -40,6 +41,7 @@ public class InvoiceConverter {
         entity.setId(dto.getId());
         entity.setInvoiceItems(invoiceItemEntities);
         entity.setAmount(dto.getAmount());
+        entity.setFilename(dto.getFilename());
         entity.setUserId(dto.getUserId());
         entity.setCreatedAt(dto.getCreatedAt());
 

@@ -32,6 +32,9 @@ public class InvoiceBean {
     @Inject
     PdfGenerator pdfGenerator;
 
+    @Inject
+    ServicesBean servicesBean;
+
     public List<Invoice> getInvoices() {
         TypedQuery<InvoiceEntity> query = em.createNamedQuery(
                 "InvoiceEntity.getAll", InvoiceEntity.class);
@@ -56,6 +59,7 @@ public class InvoiceBean {
     public Invoice createInvoice(InvoiceDto invoiceDto) {
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setUserId(invoiceDto.getUserId());
+        invoiceEntity.setFilename("invoice-" + UUID.randomUUID());
         invoiceEntity.setAmount(90.0); // TODO: remove magic numbers and get them by calculating data from other
                                        // microservices
 
@@ -67,7 +71,8 @@ public class InvoiceBean {
 
         InvoiceItemEntity invoiceItemEntity = this.createInvoiceItemEntry(invoiceEntity, invoiceDto.getItemId());
         invoiceEntity.addInvoiceItem(invoiceItemEntity);
-        this.pdfGenerator.generate(InvoiceConverter.toDto(invoiceEntity));
+        this.pdfGenerator.generate(InvoiceConverter.toDto(invoiceEntity), this.servicesBean);
+        this.servicesBean.sendInvoiceEmail(InvoiceConverter.toDto(invoiceEntity));
 
         return InvoiceConverter.toDto(invoiceEntity);
     }

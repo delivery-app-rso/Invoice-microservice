@@ -25,6 +25,9 @@ public class InvoiceEntity {
     @Column(name = "amount")
     private Double amount;
 
+    @Column(name = "filename")
+    private String filename;
+
     @Column(name = "createdAt")
     private Date createdAt;
 
@@ -50,6 +53,14 @@ public class InvoiceEntity {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Date getCreatedAt() {

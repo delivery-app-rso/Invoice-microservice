@@ -42,6 +42,14 @@ public class InvoiceResource {
                 return Response.status(Response.Status.OK).entity(invoices).build();
         }
 
+        @Operation(description = "Get status", summary = "Get status")
+        @APIResponses({ @APIResponse(responseCode = "200", description = "status") })
+        @GET
+        @Path("/status")
+        public Response getStatus() {
+                return Response.status(Response.Status.OK).build();
+        }
+
         @Operation(description = "Get invoice.", summary = "Get invoice")
         @APIResponses({
                         @APIResponse(responseCode = "200", description = "invoice data", content = @Content(schema = @Schema(implementation = Invoice.class))) })

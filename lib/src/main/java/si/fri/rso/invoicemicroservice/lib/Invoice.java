@@ -11,6 +11,8 @@ public class Invoice {
 
     private Double amount;
 
+    private String filename;
+
     private Date createdAt;
 
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
@@ -29,6 +31,14 @@ public class Invoice {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Double getAmount() {

@@ -12,6 +12,9 @@ public class ServicesProperties {
     private String itemsServiceHost;
 
     @ConfigValue(watch = true)
+    private String mailingServiceHost;
+
+    @ConfigValue(watch = true)
     private String minioHost;
 
     public String getItemsServiceHost() {
@@ -20,6 +23,14 @@ public class ServicesProperties {
 
     public void setItemsServiceHost(String itemsServiceHost) {
         this.itemsServiceHost = itemsServiceHost;
+    }
+
+    public String getMailingServiceHost() {
+        return mailingServiceHost;
+    }
+
+    public void setMailingServiceHost(String mailingServiceHost) {
+        this.mailingServiceHost = mailingServiceHost;
     }
 
     public String getMinioHost() {
