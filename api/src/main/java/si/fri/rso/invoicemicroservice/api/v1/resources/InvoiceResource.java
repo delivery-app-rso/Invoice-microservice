@@ -39,7 +39,7 @@ public class InvoiceResource {
                         @APIResponse(responseCode = "200", description = "List of invoices", content = @Content(schema = @Schema(implementation = Invoice.class, type = SchemaType.ARRAY)), headers = {
                                         @Header(name = "X-Total-Count", description = "Number of objects in list") }) })
         @GET
-        public Response getMails() {
+        public Response getInvoices() {
                 List<Invoice> invoices = this.invoiceBean.getInvoices();
                 return Response.status(Response.Status.OK).entity(invoices).build();
         }
@@ -54,7 +54,8 @@ public class InvoiceResource {
 
         @Operation(description = "Get invoice.", summary = "Get invoice")
         @APIResponses({
-                        @APIResponse(responseCode = "200", description = "invoice data", content = @Content(schema = @Schema(implementation = Invoice.class))) })
+                        @APIResponse(responseCode = "200", description = "Invoice data", content = @Content(schema = @Schema(implementation = Invoice.class))) })
+        @APIResponse(responseCode = "404", description = "Invoice not found.")
         @GET
         @Path("/{invoiceId}")
         public Response getInvoice(
@@ -72,16 +73,16 @@ public class InvoiceResource {
         @Operation(description = "Store invoice in DB.", summary = "Store invoice")
         @APIResponses({
                         @APIResponse(responseCode = "201", description = "Invoice successfully added."),
-                        @APIResponse(responseCode = "405", description = "Validation error .")
+                        @APIResponse(responseCode = "400", description = "Bad request error.")
         })
         @POST
         public Response createInvoice(
                         @RequestBody(description = "DTO object with Invoice data.", required = true, content = @Content(schema = @Schema(implementation = InvoiceDto.class))) InvoiceDto invoiceDto) {
-                if (invoiceDto.getUserId() == null || invoiceDto.getItemId() == null) {
+                if (invoiceDto.getDeliveryData() == null || invoiceDto.getUserData() == null) {
                         return Response.status(Response.Status.BAD_REQUEST).build();
                 }
 
                 Invoice invoice = this.invoiceBean.createInvoice(invoiceDto);
-                return Response.status(Response.Status.OK).entity(invoice).build();
+                return Response.status(Response.Status.CREATED).entity(invoice).build();
         }
 }

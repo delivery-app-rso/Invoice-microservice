@@ -7,31 +7,8 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 @ConfigBundle("microservices")
 public class ServicesProperties {
-
-    @ConfigValue(watch = true)
-    private String itemsServiceHost;
-
-    @ConfigValue(watch = true)
-    private String mailingServiceHost;
-
     @ConfigValue(watch = true)
     private String minioHost;
-
-    public String getItemsServiceHost() {
-        return itemsServiceHost;
-    }
-
-    public void setItemsServiceHost(String itemsServiceHost) {
-        this.itemsServiceHost = itemsServiceHost;
-    }
-
-    public String getMailingServiceHost() {
-        return mailingServiceHost;
-    }
-
-    public void setMailingServiceHost(String mailingServiceHost) {
-        this.mailingServiceHost = mailingServiceHost;
-    }
 
     public String getMinioHost() {
         return minioHost;

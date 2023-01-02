@@ -2,7 +2,6 @@ kumuluzee:
   version: 1.0.0
   name: invoice-microservice
   server:
-    base-url: http://localhost:8080
     http:
       port: 8080
   datasources:
@@ -11,6 +10,9 @@ kumuluzee:
       connection-url: jdbc:postgresql://localhost:5432/rso_db
       username: dbuser
       password: postgres
+  openapi-mp:
+    ui:
+      mapping: /openapi/ui
   health:
     checks:
       data-source-health-check:
@@ -25,13 +27,21 @@ kumuluzee:
     web-instrumentation:
       - name: invoices-endpoint
         url-pattern: /v1/invoices/*
+  graphql:
+    schema:
+      include-scalars: true
+      include-schema-definition: true
+      include-directives: true
+      include-introspection-types: true
+    metrics:
+      enabled: true
+  dev:
+    scan-libraries:
+      - invoice-microservice-services
+      - invoice-microservice-models
+      - invoice-microservice-lib
   config:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
     consul:
       agent: http://localhost:8500
-  rest-client:
-    registrations:
-      - class: invoice-mail-process-api
-        url: http://localhost:8080/v1
-        read-timeout: 5000

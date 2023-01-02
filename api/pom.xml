@@ -39,6 +39,14 @@
             <artifactId>kumuluzee-health</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.kumuluz.ee.graphql</groupId>
+            <artifactId>kumuluzee-graphql</artifactId>            
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.graphql</groupId>
+            <artifactId>kumuluzee-graphql-ui</artifactId>
+        </dependency>
+        <dependency>
             <groupId>si.fri.rso</groupId>
             <artifactId>invoice-microservice-services</artifactId>
         </dependency>

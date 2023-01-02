@@ -31,15 +31,20 @@ public class InvoiceBean {
     @Inject
     PdfGenerator pdfGenerator;
 
-    @Inject
-    ServicesBean servicesBean;
-
     public List<Invoice> getInvoices() {
         TypedQuery<InvoiceEntity> query = em.createNamedQuery(
                 "InvoiceEntity.getAll", InvoiceEntity.class);
 
         List<InvoiceEntity> resultList = query.getResultList();
         return resultList.stream().map(InvoiceConverter::toDto).collect(Collectors.toList());
+    }
+
+    public List<Invoice> getUserInvoices(Integer userId) {
+        List<InvoiceEntity> invoiceEntities = (List<InvoiceEntity>) em
+                .createQuery("SELECT i FROM InvoiceEntity i WHERE i.userId=:userId")
+                .setParameter("userId", userId).getResultList();
+
+        return invoiceEntities.stream().map(InvoiceConverter::toDto).collect(Collectors.toList());
     }
 
     public Invoice getInvoice(Integer id) {
@@ -56,22 +61,26 @@ public class InvoiceBean {
 
     @Timed
     public Invoice createInvoice(InvoiceDto invoiceDto) {
+        System.out.println(invoiceDto.getUserData().toString());
+        System.out.println(invoiceDto.getDeliveryData().toString());
+
         InvoiceEntity invoiceEntity = new InvoiceEntity();
-        invoiceEntity.setUserId(invoiceDto.getUserId());
+        invoiceEntity.setUserId(Integer.parseInt(invoiceDto.getUserData().get("id")));
         invoiceEntity.setFilename("invoice-" + UUID.randomUUID());
-        invoiceEntity.setAmount(90.0); // TODO: remove magic numbers and get them by calculating data from other
-                                       // microservices
+        invoiceEntity.setAmount(Double.parseDouble(invoiceDto.getDeliveryData().get("amount")));
 
         this.persistEntity(invoiceEntity);
 
         if (invoiceEntity.getId() == null) {
             throw new RuntimeException("Entity was not persisted");
         }
+        System.out.println(invoiceDto.getDeliveryData().toString());
 
-        InvoiceItemEntity invoiceItemEntity = this.createInvoiceItemEntry(invoiceEntity, invoiceDto.getItemId());
+        InvoiceItemEntity invoiceItemEntity = this.createInvoiceItemEntry(invoiceEntity,
+                Integer.parseInt(invoiceDto.getDeliveryData().get("itemId")));
         invoiceEntity.addInvoiceItem(invoiceItemEntity);
-        this.pdfGenerator.generate(InvoiceConverter.toDto(invoiceEntity), this.servicesBean);
-        this.servicesBean.sendInvoiceEmail(InvoiceConverter.toDto(invoiceEntity));
+
+        this.pdfGenerator.generate(InvoiceConverter.toDto(invoiceEntity), invoiceDto);
 
         return InvoiceConverter.toDto(invoiceEntity);
     }

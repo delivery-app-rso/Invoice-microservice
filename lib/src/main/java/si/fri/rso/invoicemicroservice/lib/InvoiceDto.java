@@ -1,24 +1,27 @@
 package si.fri.rso.invoicemicroservice.lib;
 
+import java.util.Map;
+
 public class InvoiceDto {
     // TODO: Add additional required data
-    private Integer userId;
+    private Map<String, String> userData;
 
-    private Integer itemId;
+    private Map<String, String> deliveryData;
 
-    public Integer getItemId() {
-        return itemId;
+    public Map<String, String> getUserData() {
+        return userData;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setUserData(Map<String, String> userData) {
+        this.userData = userData;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Map<String, String> getDeliveryData() {
+        return deliveryData;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setDeliveryData(Map<String, String> deliveryData) {
+        this.deliveryData = deliveryData;
     }
+
 }
