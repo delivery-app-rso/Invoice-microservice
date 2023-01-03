@@ -45,3 +45,9 @@ kumuluzee:
     max-retry-delay-ms: 900000
     consul:
       agent: http://localhost:8500
+  kumuluzee:
+    cors-filter:
+      annotations:
+        my-resource:
+          allow-origin: "*"
+          allow-subdomains: true
